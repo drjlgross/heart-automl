@@ -50,7 +50,7 @@ CONFIG: dict = {
     "kernel_size": 3,
 
     # Training
-    "epochs": 10,
+    "epochs": 5,    # loop #1 starting point; agent may scale up in "training" category
     "batch_size": 32,
     "lr": 1e-3,
     "num_workers": 0,            # CPU box: 0 avoids fork overhead

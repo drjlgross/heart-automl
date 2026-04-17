@@ -5,6 +5,20 @@ what loop #1 actually reveals. Append freely during the week; prune on Saturday.
 
 ---
 
+## Empirical findings from pre-loop testing
+
+- **Epoch instability at low-epoch regime.** Baseline is dramatically different
+  at 5 vs 10 epochs (10ep: sens 0.45 / spec 0.28 / metric 0.36; 5ep: sens 0.08 /
+  spec 0.85 / metric 0.46). Model is landing in fundamentally different
+  prediction regimes depending on training duration — not a small gradient
+  difference, but a different local mode entirely. Suggests the model is
+  under-trained at 5 epochs and the loss landscape is rough in this regime.
+  Worth surfacing this as an explicit observation in program.md v2: *"the
+  metric surface is highly sensitive to epochs below ~10; investigate whether
+  increased epochs + complementary changes (class_weight, threshold) can
+  stabilize both sens and spec simultaneously."* This is also a reason to
+  weight `training` category exploration in loop #1.
+
 ## Likely high-value (built on known priors)
 
 - **Segmentation as a new knob.** Add Springer HMM segmenter as preprocessing,
@@ -47,9 +61,6 @@ what loop #1 actually reveals. Append freely during the week; prune on Saturday.
   natural cardiac timing; 5s is arbitrary. Let agent try longer (8s, 10s) or
   shorter (3s) windows.
 
-- **Epochs.** Currently 10. May be under- or over-training on this data. Worth
-  exposing as an agent-tunable knob.
-
 - **Optimizer choice.** Currently Adam-only. Could expose as a small enum
   (`"adam"`, `"adamw"`, `"sgd_momentum"`) if loop #1 doesn't close the gap.
 
@@ -59,6 +70,15 @@ what loop #1 actually reveals. Append freely during the week; prune on Saturday.
   threshold on RunPod, program.md v2 should explicitly penalize changes that
   balloon runtime. Calibrate budget against actual cold/warm start timing on
   RunPod once loop #1 is underway.
+
+- **Smaller-model starting point as a speed lever.** `conv_channels` currently
+  starts at `(24, 48, 96)` (~52k params). Reducing to `(16, 32, 64)` (~23k
+  params) would roughly halve per-run training time again. Not used for loop #1
+  because pairing too many starting-point changes at once risks muddying the
+  signal. If loop #2 needs more runs per hour than epochs=5 alone provides, this
+  is the next lever. Agent can already scale channels up/down via the
+  `architecture` category, so changing the default is purely a speed move, not a
+  capability restriction.
 
 ## Out of scope / parked
 
@@ -73,4 +93,5 @@ what loop #1 actually reveals. Append freely during the week; prune on Saturday.
 
 ---
 
-*Last updated: Day 2 (Friday 4/17) — initial list.*
+*Last updated: Day 2 (Friday 4/17) — added epoch instability finding from
+pre-loop 5-epoch validation run.*
