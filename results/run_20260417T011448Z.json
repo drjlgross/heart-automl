@@ -1,0 +1,49 @@
+{
+  "metric": 0.36449315404924176,
+  "sensitivity": 0.44808743169398907,
+  "specificity": 0.2808988764044944,
+  "confusion": {
+    "tp": 82,
+    "tn": 550,
+    "fp": 1408,
+    "fn": 101
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 52489,
+  "runtime_sec": 484.1935827732086,
+  "config": {
+    "seed": 42,
+    "data_root": "/Users/julia/ww_demo/heart-automl/data",
+    "cache_dir": "/Users/julia/ww_demo/heart-automl/data/cache",
+    "results_dir": "/Users/julia/ww_demo/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 5.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 3,
+    "epochs": 10,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.5
+  }
+}
