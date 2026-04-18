@@ -1,0 +1,66 @@
+{
+  "experiment_num": 4,
+  "metric": 0.4656516351579899,
+  "sensitivity": 0.08196721311475409,
+  "specificity": 0.8493360572012257,
+  "confusion": {
+    "tp": 15,
+    "tn": 1663,
+    "fp": 295,
+    "fn": 168
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 52489,
+  "runtime_sec": 98.10721278190613,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 3,
+    "metric": 0.4656516351579899,
+    "sensitivity": 0.08196721311475409,
+    "specificity": 0.8493360572012257
+  },
+  "vs_prev_best": {
+    "metric": 0.0,
+    "sensitivity": 0.0,
+    "specificity": 0.0
+  },
+  "change_category": "other",
+  "change_description": "Baseline schema update \u2014 no model changes",
+  "config": {
+    "seed": 42,
+    "data_root": "/workspace/heart-automl/data",
+    "cache_dir": "/workspace/heart-automl/data/cache",
+    "results_dir": "/workspace/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 5.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 3,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.5,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
