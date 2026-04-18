@@ -286,6 +286,15 @@ def _load_prior_runs(results_dir: Path) -> list[dict]:
     return [rec for _, _, rec in entries]
 
 
+def _is_degenerate_confusion(c: dict) -> bool:
+    """program.md v1.1 guard: a zero row or zero column in the confusion
+    matrix marks the predictor as degenerate (single-class or no-class).
+    """
+    tp = c.get("tp", 0); tn = c.get("tn", 0)
+    fp = c.get("fp", 0); fn = c.get("fn", 0)
+    return (tp + fn == 0) or (tn + fp == 0) or (tp + fp == 0) or (tn + fn == 0)
+
+
 def _compute_pos_weight(cfg: dict,
                         train_items: list[tuple[Path, int]]) -> float:
     mode = cfg["pos_weight_mode"]
@@ -354,8 +363,11 @@ def main(cfg: dict) -> dict:
     experiment_num = len(prior_runs) + 1
 
     prev_best: dict | None = None
-    if prior_runs:
-        best = max(prior_runs, key=lambda r: r.get("metric", float("-inf")))
+    eligible = [r for r in prior_runs
+                if isinstance(r.get("confusion"), dict)
+                and not _is_degenerate_confusion(r["confusion"])]
+    if eligible:
+        best = max(eligible, key=lambda r: r.get("metric", float("-inf")))
         prev_best = {
             "experiment_num": best.get("experiment_num"),
             "metric":         best.get("metric"),
@@ -364,11 +376,12 @@ def main(cfg: dict) -> dict:
         }
 
     this_metric = metrics["challenge_metric"]
+    this_degenerate = _is_degenerate_confusion(metrics)
     if prev_best is None:
-        kept = True
+        kept = not this_degenerate
         vs_prev_best = None
     else:
-        kept = this_metric > prev_best["metric"]
+        kept = (not this_degenerate) and (this_metric > prev_best["metric"])
         vs_prev_best = {
             "metric":      this_metric           - prev_best["metric"],
             "sensitivity": metrics["sensitivity"] - prev_best["sensitivity"],
