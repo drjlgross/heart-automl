@@ -6,6 +6,7 @@ Deps: see requirements.txt  (torch, torchaudio, numpy, soundfile)
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 import os
 import random
@@ -141,6 +142,20 @@ def compute_spectrogram(wav_path: Path, mel: nn.Module, cfg: dict) -> np.ndarray
 
 
 # --------------------------------------------------------------------------- #
+# Cache keying — any CONFIG field that affects spectrogram content must be
+# hashed into the cache filename, or edits silently reuse stale specs.
+# --------------------------------------------------------------------------- #
+_PREPROC_CACHE_FIELDS = (
+    "clip_seconds", "n_mels", "win_ms", "hop_ms", "f_min", "f_max", "sample_rate",
+)
+
+
+def preproc_cache_tag(cfg: dict) -> str:
+    payload = "|".join(f"{k}={cfg[k]}" for k in sorted(_PREPROC_CACHE_FIELDS))
+    return hashlib.sha256(payload.encode()).hexdigest()[:8]
+
+
+# --------------------------------------------------------------------------- #
 # Dataset — caches spectrograms to .npy on first touch, mmaps thereafter.
 # --------------------------------------------------------------------------- #
 class HeartSoundDataset(Dataset):
@@ -151,10 +166,11 @@ class HeartSoundDataset(Dataset):
     def __init__(self, items: list[tuple[Path, int]], cache_dir: Path,
                  mel: nn.Module, cfg: dict):
         cache_dir.mkdir(parents=True, exist_ok=True)
+        tag = preproc_cache_tag(cfg)
         specs: list[np.ndarray] = []
         labels: list[int] = []
         for wav_path, label in items:
-            cp = cache_dir / f"{wav_path.parent.name}__{wav_path.stem}.npy"
+            cp = cache_dir / f"{wav_path.parent.name}__{wav_path.stem}__{tag}.npy"
             if cp.exists():
                 spec = np.load(cp)
             else:
