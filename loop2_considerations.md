@@ -64,6 +64,8 @@ what loop #1 actually reveals. Append freely during the week; prune on Saturday.
 - **Optimizer choice.** Currently Adam-only. Could expose as a small enum
   (`"adam"`, `"adamw"`, `"sgd_momentum"`) if loop #1 doesn't close the gap.
 
+- **Training set heterogeneity.** Training is a five-folder mixture with highly variable per-folder class distributions (training-a 71% abnormal, training-b 21%, training-c 77%, training-d 51%, training-f 30%; aggregate 43.9% abnormal across 1099 recordings). The `auto_train` pos_weight treats this as a single homogeneous distribution, weighting against a fiction. Worth exploring in loop #2: per-folder class weighting, or training-folder ablation to identify which folders contribute most to val generalization.
+
 ## Speed / compute considerations
 
 - **Per-run runtime budget.** If loop #1 shows individual runs creeping past a
@@ -91,7 +93,9 @@ what loop #1 actually reveals. Append freely during the week; prune on Saturday.
   operating on a single file, and unlikely to beat a well-tuned CNN on this
   data size. Skip.
 
+  - **Honest val-prior estimator (replacement for removed `auto_val_prior`).** The original `auto_val_prior` option computed pos_weight from validation set labels, which leaked target information and invalidated the held-out test. Removed before loop #1 launch. A methodologically honest version would carve a third held-out split from the training folders and use its class distribution as a proxy for val-time prior — letting the model train against an estimate of the deployment distribution without ever touching actual val labels. Worth building in loop #2 if distribution-shift handling emerges as a dominant lever in loop #1 results.
+
 ---
 
-*Last updated: Day 2 (Friday 4/17) — added epoch instability finding from
+*Last updated: Day 2 (Sat 4/18) — to methods and parked/out of scope
 pre-loop 5-epoch validation run.*
