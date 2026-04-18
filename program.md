@@ -90,4 +90,4 @@ The category and description in the commit message must match the `change_catego
 - Augmentation (time shift, SpecAugment, noise injection) — deferred.
 - Ensembling — not in scope for this project.
 - Full architecture replacement (transformers, pretrained audio models) — not in scope.
-- Modifying the validation folder, metric definition, train/val split, or seed — never.
+- Modifying the validation folder, metric definition, train/val split, or seed — never. Validation labels may only be read inside `evaluate()`: no CONFIG option or code path may use `training-e` labels for class weighting, threshold selection, early stopping, or model selection.
