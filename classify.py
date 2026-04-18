@@ -287,12 +287,18 @@ def _load_prior_runs(results_dir: Path) -> list[dict]:
 
 
 def _is_degenerate_confusion(c: dict) -> bool:
-    """program.md v1.1 guard: a zero row or zero column in the confusion
-    matrix marks the predictor as degenerate (single-class or no-class).
+    """program.md v1.2 guard. A predictor is degenerate if either:
+    (a) the confusion matrix has a zero row or column (strict zero-check), or
+    (b) fewer than 5% of validation samples are assigned to either class
+        (5% prediction floor — catches quasi-degenerate collapses that
+        narrowly escape the strict check with a handful of lucky predictions).
     """
     tp = c.get("tp", 0); tn = c.get("tn", 0)
     fp = c.get("fp", 0); fn = c.get("fn", 0)
-    return (tp + fn == 0) or (tn + fp == 0) or (tp + fp == 0) or (tn + fn == 0)
+    if (tp + fn == 0) or (tn + fp == 0) or (tp + fp == 0) or (tn + fn == 0):
+        return True
+    n_val = tp + tn + fp + fn
+    return (tp + fp) < 0.05 * n_val or (tn + fn) < 0.05 * n_val
 
 
 def _compute_pos_weight(cfg: dict,
