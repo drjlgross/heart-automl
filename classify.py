@@ -60,8 +60,8 @@ CONFIG: dict = {
     #   "auto_train"      — neg/pos from training set (historical default)
     #   "none"            — disable class weighting (pos_weight = 1.0)
     #   "manual"          — use pos_weight_manual verbatim
-    "pos_weight_mode": "auto_train",
-    "pos_weight_manual": 1.0,
+    "pos_weight_mode": "manual",
+    "pos_weight_manual": 3.0,
 }
 
 
@@ -372,9 +372,9 @@ def main(cfg: dict) -> dict:
         "kept":               kept,
         "prev_best":          prev_best,
         "vs_prev_best":       vs_prev_best,
-        "hypothesis":         "Lowering decision_threshold from 0.5 to 0.3 will raise the challenge metric by recovering sensitivity from its 0.082 floor at modest cost to specificity, since the current operating point is far below the ~44% positive base rate.",
-        "change_category":    "threshold",
-        "change_description": "decision_threshold 0.5 → 0.3",
+        "hypothesis":         "Raising pos_weight from auto_train's ~1.28 to a stronger manual 3.0 will push the loss to weight minority-class errors more heavily and further improve sensitivity on top of exp #6's threshold gain, testing whether loss-weighting and threshold tuning compound or substitute.",
+        "change_category":    "class_weight",
+        "change_description": "pos_weight manual 3.0 (was auto_train ≈1.28)",
         "config":             cfg,
     }
     results_dir.mkdir(parents=True, exist_ok=True)
