@@ -69,7 +69,11 @@ The pod sustains ~100s per 5-epoch run. Overnight budget is roughly 8 hours. Cov
 
 `classify.py` writes the results JSON atomically at the end of each run, including the `kept` field (true if this run's metric exceeds the prior best).
 
-- **Degeneracy guard.** If the confusion matrix has a zero row or zero column (any of tp+fn=0, tn+fp=0, tp+fp=0, tn+fn=0), treat as kept=false regardless of metric. A degenerate predictor — one that predicts a single class for all inputs, or fails to predict a class at all — cannot be the best config. This rule takes precedence over the standard kept comparison.
+- **Degeneracy guard (v1.2).** A run is treated as kept=false regardless of metric if either condition holds on the validation confusion matrix:
+    - **Strict zero-check.** Any of tp+fn=0, tn+fp=0, tp+fp=0, tn+fn=0 — a zero row or column means the predictor is single-class or no-class.
+    - **5% prediction floor.** tp+fp < 0.05·N_val or tn+fn < 0.05·N_val — the predictor assigns fewer than 5% of validation samples to one of the two classes, i.e., is quasi-degenerate. N_val is the total validation count.
+
+    A predictor that narrowly escapes the strict zero-check with a handful of lucky predictions on the minority side cannot meaningfully be "best" and is rejected under the same principle. This rule takes precedence over the standard kept comparison.
 - If `kept: true`: commit `classify.py` with the template below, then push.
 - If `kept: false`: revert `classify.py` to the prior best config via `git checkout -- classify.py`. The results JSON remains in results/ as a record of the failed experiment. Do not commit.
 
