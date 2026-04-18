@@ -372,6 +372,7 @@ def main(cfg: dict) -> dict:
         "kept":               kept,
         "prev_best":          prev_best,
         "vs_prev_best":       vs_prev_best,
+        "hypothesis":         "",
         "change_category":    "other",
         "change_description": "Baseline schema update — no model changes",
         "config":             cfg,
