@@ -54,7 +54,7 @@ CONFIG: dict = {
     "batch_size": 32,
     "lr": 1e-3,
     "num_workers": 0,            # CPU box: 0 avoids fork overhead
-    "decision_threshold": 0.5,
+    "decision_threshold": 0.3,
 
     # Class weighting for BCEWithLogitsLoss pos_weight.
     #   "auto_train"      — neg/pos from training set (historical default)
@@ -372,9 +372,9 @@ def main(cfg: dict) -> dict:
         "kept":               kept,
         "prev_best":          prev_best,
         "vs_prev_best":       vs_prev_best,
-        "hypothesis":         "",
-        "change_category":    "other",
-        "change_description": "Baseline schema update — no model changes",
+        "hypothesis":         "Lowering decision_threshold from 0.5 to 0.3 will raise the challenge metric by recovering sensitivity from its 0.082 floor at modest cost to specificity, since the current operating point is far below the ~44% positive base rate.",
+        "change_category":    "threshold",
+        "change_description": "decision_threshold 0.5 → 0.3",
         "config":             cfg,
     }
     results_dir.mkdir(parents=True, exist_ok=True)
