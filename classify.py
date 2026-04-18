@@ -58,7 +58,6 @@ CONFIG: dict = {
 
     # Class weighting for BCEWithLogitsLoss pos_weight.
     #   "auto_train"      — neg/pos from training set (historical default)
-    #   "auto_val_prior"  — neg/pos from validation set (matches val-time prior)
     #   "none"            — disable class weighting (pos_weight = 1.0)
     #   "manual"          — use pos_weight_manual verbatim
     "pos_weight_mode": "auto_train",
@@ -272,16 +271,11 @@ def _load_prior_runs(results_dir: Path) -> list[dict]:
 
 
 def _compute_pos_weight(cfg: dict,
-                        train_items: list[tuple[Path, int]],
-                        val_items:   list[tuple[Path, int]]) -> float:
+                        train_items: list[tuple[Path, int]]) -> float:
     mode = cfg["pos_weight_mode"]
     if mode == "auto_train":
         pos = sum(lab for _, lab in train_items)
         neg = len(train_items) - pos
-        return neg / max(pos, 1)
-    if mode == "auto_val_prior":
-        pos = sum(lab for _, lab in val_items)
-        neg = len(val_items) - pos
         return neg / max(pos, 1)
     if mode == "none":
         return 1.0
@@ -309,7 +303,7 @@ def main(cfg: dict) -> dict:
     val_ds   = HeartSoundDataset(val_items,   Path(cfg["cache_dir"]), mel, cfg)
 
     pos_weight = torch.tensor(
-        [_compute_pos_weight(cfg, train_items, val_items)], dtype=torch.float32
+        [_compute_pos_weight(cfg, train_items)], dtype=torch.float32
     )
 
     train_loader = DataLoader(
