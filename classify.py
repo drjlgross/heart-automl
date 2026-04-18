@@ -404,6 +404,7 @@ def main(cfg: dict) -> dict:
         "hypothesis":         "Lowering decision_threshold from 0.5 to 0.3 will raise the challenge metric by recovering sensitivity from its 0.082 floor at modest cost to specificity, since the current operating point is far below the ~44% positive base rate.",
         "change_category":    "threshold",
         "change_description": "decision_threshold 0.5 → 0.3",
+        "interactions_noticed": [],
         "config":             cfg,
     }
     results_dir.mkdir(parents=True, exist_ok=True)
