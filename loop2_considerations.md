@@ -55,6 +55,24 @@ what loop #1 actually reveals. Append freely during the week; prune on Saturday.
   obscure the human contribution in the demo). Worth trying only if loop #1 ran
   cleanly.
 
+- **Mechanical vs interpretive `interactions_noticed`.** Loop #1 has the agent
+  set this field post-hoc by reading sens/spec/metric and deciding whether the
+  run looks like a known pattern (threshold coupling) or something new. Upside:
+  nuance — the agent can flag genuinely novel dynamics (e.g., exp #15's
+  symmetric sens/spec trade that did NOT look like the coupling, just a clean
+  threshold sweep). Downside: pattern-matching bias (exp #14 got pre-filled
+  with `["threshold"]` before the numbers were read), and the field's meaning
+  drifts if interpretation norms evolve mid-loop. Loop #2 should consider
+  replacing agent-interpretation with a mechanical rule: compute
+  `interactions_noticed` directly from confusion-matrix deltas against
+  prev_best. E.g., flag `"threshold"` when the sens/spec trade is large but
+  near-metric-neutral — specifically `|Δsens| + |Δspec| > k·|Δmetric|` for some
+  k (3 is a reasonable starting point) — indicating the model moved along the
+  sens/spec frontier rather than improving discrimination. Reliably comparable
+  across runs at the cost of losing interpretive nuance. Core question to
+  settle before loop #2: is this field for cross-run comparison (→ mechanical)
+  or for narrative/science-process signal (→ interpretive)?
+
 - **Threshold as a cross-cutting coupling — pair it with each category.** Loop #1
   observed (exps #8, #9, #10) that every category-change made from the exp #6
   best — preprocessing (clip_seconds↑), training (epochs↑), and architecture
@@ -112,5 +130,5 @@ what loop #1 actually reveals. Append freely during the week; prune on Saturday.
 
 ---
 
-*Last updated: Day 3 (Sun 4/19) — added threshold-coupling observation from
-loop #1 exps #8/#9/#10.*
+*Last updated: Day 3 (Sun 4/19) — added threshold-coupling observation and
+mechanical-vs-interpretive question on `interactions_noticed`.*
