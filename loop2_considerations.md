@@ -55,6 +55,21 @@ what loop #1 actually reveals. Append freely during the week; prune on Saturday.
   obscure the human contribution in the demo). Worth trying only if loop #1 ran
   cleanly.
 
+- **Threshold as a cross-cutting coupling — pair it with each category.** Loop #1
+  observed (exps #8, #9, #10) that every category-change made from the exp #6
+  best — preprocessing (clip_seconds↑), training (epochs↑), and architecture
+  (kernel_size↑) — produced the same sens-up / spec-collapse pattern. Three
+  consecutive `interactions_noticed=["threshold"]` entries. The 0.3 decision
+  threshold is aggressive enough that any change shifting the output
+  distribution toward higher probabilities gets amplified into a spec collapse,
+  so knob effects are hard to read in isolation. Loop #2 should consider pairing
+  each category exploration with a threshold sweep — e.g., evaluate each
+  candidate config at threshold ∈ {0.3, 0.4, 0.5} — so a knob's effect can be
+  read at multiple operating points rather than conditioned on one threshold
+  that distorts every other axis. Also worth investigating whether exp #6's
+  metric was itself a happy accident of undertrained weights meeting a low
+  threshold (no stable non-degenerate neighbor has yet been found).
+
 ## Parameter space expansions
 
 - **Clip length.** Currently hardcoded 5s in CONFIG. Heart sound cycles have
@@ -97,5 +112,5 @@ what loop #1 actually reveals. Append freely during the week; prune on Saturday.
 
 ---
 
-*Last updated: Day 2 (Sat 4/18) — to methods and parked/out of scope
-pre-loop 5-epoch validation run.*
+*Last updated: Day 3 (Sun 4/19) — added threshold-coupling observation from
+loop #1 exps #8/#9/#10.*
