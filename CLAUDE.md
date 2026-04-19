@@ -77,6 +77,13 @@ You are in this mode when:
 In this mode:
 - Read `program.md` for scientific direction — it specifies what to test
 - Read prior `results/*.json` files to understand what's been tried
+- **Interpretation fields are data-dependent.** `hypothesis`,
+  `change_category`, and `change_description` describe what's being tested
+  and can be set pre-run. But `interactions_noticed` must be populated
+  post-run from the actual metrics and confusion matrix, never pre-filled
+  or pattern-matched from prior runs. A tag that fit exp #N does not
+  automatically fit exp #N+1 — always print the summary and read the
+  numbers before deciding what goes in the field.
 - Edit `classify.py` per your proposed change
 - Run the script: `python classify.py`
 - The script writes a new `results/run_<timestamp>.json` automatically
