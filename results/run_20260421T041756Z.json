@@ -1,0 +1,68 @@
+{
+  "experiment_num": 18,
+  "metric": 0.4156689384171425,
+  "sensitivity": 0.40437158469945356,
+  "specificity": 0.42696629213483145,
+  "confusion": {
+    "tp": 74,
+    "tn": 836,
+    "fp": 1122,
+    "fn": 109
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 52489,
+  "runtime_sec": 92.63456535339355,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 6,
+    "metric": 0.47254223948827,
+    "sensitivity": 0.2459016393442623,
+    "specificity": 0.6991828396322778
+  },
+  "vs_prev_best": {
+    "metric": -0.056873301071127536,
+    "sensitivity": 0.15846994535519127,
+    "specificity": -0.27221654749744634
+  },
+  "hypothesis": "Lowering decision_threshold from 0.3 to 0.2 further binarizes toward positive predictions, probing below #6's operating point. If residual discriminative capacity exists below 0.3, sens rises without proportional spec collapse; if 0.3 is already at the noise floor, spec collapses with no meaningful sens gain \u2014 extending the threshold sweep past the flat 0.3/0.4/0.5 middle into an extreme.",
+  "change_category": "threshold",
+  "change_description": "decision_threshold 0.3 \u2192 0.2",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/root/heart-automl/data",
+    "cache_dir": "/root/heart-automl/data/cache",
+    "results_dir": "/root/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 5.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 3,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.2,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
