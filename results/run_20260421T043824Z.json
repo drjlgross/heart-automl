@@ -1,0 +1,68 @@
+{
+  "experiment_num": 24,
+  "metric": 0.4282863633572788,
+  "sensitivity": 0.30601092896174864,
+  "specificity": 0.550561797752809,
+  "confusion": {
+    "tp": 56,
+    "tn": 1078,
+    "fp": 880,
+    "fn": 127
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 283849,
+  "runtime_sec": 196.24578213691711,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 23,
+    "metric": 0.48678812438252483,
+    "sensitivity": 0.3770491803278688,
+    "specificity": 0.5965270684371808
+  },
+  "vs_prev_best": {
+    "metric": -0.05850176102524601,
+    "sensitivity": -0.07103825136612019,
+    "specificity": -0.04596527068437184
+  },
+  "hypothesis": "Raising f_min from 25 to 100 Hz excludes the very-low-frequency band that carries mostly respiratory / motion noise (heart-sound fundamentals start ~50\u2013100 Hz). If that band is pure distractor, metric improves; if it carries low-frequency context the model exploits, metric regresses. Runs on new #23 baseline (kernel 7).",
+  "change_category": "preprocessing",
+  "change_description": "f_min 25 \u2192 100 Hz",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/root/heart-automl/data",
+    "cache_dir": "/root/heart-automl/data/cache",
+    "results_dir": "/root/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 5.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 100.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 7,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
