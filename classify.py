@@ -49,7 +49,7 @@ CONFIG: dict = {
 
     # Model
     "conv_channels": (24, 48, 96),
-    "kernel_size": 3,
+    "kernel_size": 7,
 
     # Training
     "epochs": 5,    # loop #1 starting point; agent may scale up in "training" category
@@ -412,9 +412,9 @@ def main(cfg: dict) -> dict:
         "kept":               kept,
         "prev_best":          prev_best,
         "vs_prev_best":       vs_prev_best,
-        "hypothesis":         "Lowering decision_threshold from 0.5 to 0.3 will raise the challenge metric by recovering sensitivity from its 0.082 floor at modest cost to specificity, since the current operating point is far below the ~44% positive base rate.",
-        "change_category":    "threshold",
-        "change_description": "decision_threshold 0.5 → 0.3",
+        "hypothesis":         "Kernel 7 extends #10's kernel-5 test. If wider receptive field progressively pushes outputs into the positive corridor (as #10's sens-up/spec-collapse suggests), kernel 7 should show deeper corridor collapse than kernel 5. If there's a sweet spot at some kernel size for discriminative structure (S1→systole→S2 spans ~200–400ms), metric could recover toward baseline.",
+        "change_category":    "architecture",
+        "change_description": "kernel_size 3 → 7",
         "interactions_noticed": [],
         "config":             cfg,
     }
