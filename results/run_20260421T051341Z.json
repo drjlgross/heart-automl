@@ -1,0 +1,68 @@
+{
+  "experiment_num": 32,
+  "metric": 0.41152592418939815,
+  "sensitivity": 0.644808743169399,
+  "specificity": 0.17824310520939735,
+  "confusion": {
+    "tp": 118,
+    "tn": 349,
+    "fp": 1609,
+    "fn": 65
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 468937,
+  "runtime_sec": 247.79700255393982,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 23,
+    "metric": 0.48678812438252483,
+    "sensitivity": 0.3770491803278688,
+    "specificity": 0.5965270684371808
+  },
+  "vs_prev_best": {
+    "metric": -0.07526220019312668,
+    "sensitivity": 0.26775956284153013,
+    "specificity": -0.4182839632277835
+  },
+  "hypothesis": "Push kernel size to 9 on kernel-7 baseline. Given #31 showed kernel 5 collapses and kernel 7 escapes, kernel 9 tests whether the escape is directional (wider is better, diminishing returns) or whether kernel 7 is a narrow sweet spot with kernel 9 either breaking further or reverting to collapse. Expected runtime ~300s (k\u00b2 conv scaling).",
+  "change_category": "architecture",
+  "change_description": "kernel_size 7 \u2192 9",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/root/heart-automl/data",
+    "cache_dir": "/root/heart-automl/data/cache",
+    "results_dir": "/root/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 5.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 9,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
