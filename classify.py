@@ -40,7 +40,7 @@ CONFIG: dict = {
 
     # Audio / spectrogram
     "sample_rate": 2000,         # Hz, target after resample
-    "clip_seconds": 5.0,
+    "clip_seconds": 3.0,
     "n_mels": 64,
     "win_ms": 25.0,
     "hop_ms": 10.0,
@@ -412,9 +412,9 @@ def main(cfg: dict) -> dict:
         "kept":               kept,
         "prev_best":          prev_best,
         "vs_prev_best":       vs_prev_best,
-        "hypothesis":         "Kernel 7 extends #10's kernel-5 test. If wider receptive field progressively pushes outputs into the positive corridor (as #10's sens-up/spec-collapse suggests), kernel 7 should show deeper corridor collapse than kernel 5. If there's a sweet spot at some kernel size for discriminative structure (S1→systole→S2 spans ~200–400ms), metric could recover toward baseline.",
-        "change_category":    "architecture",
-        "change_description": "kernel_size 3 → 7",
+        "hypothesis":         "Shortening clip_seconds from 5 to 3 on kernel-7 baseline. #8's 5→10 triggered corridor, so longer was bad; 3 tests the opposite direction. Short clips mean ~3 cardiac cycles per sample vs ~5; if abnormal discrimination needs cycle-count, metric regresses; if it's local-frame-based, short clips preserve signal with faster runtime.",
+        "change_category":    "preprocessing",
+        "change_description": "clip_seconds 5 → 3",
         "interactions_noticed": [],
         "config":             cfg,
     }
