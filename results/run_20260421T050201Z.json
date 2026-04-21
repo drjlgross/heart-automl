@@ -1,0 +1,68 @@
+{
+  "experiment_num": 29,
+  "metric": 0.4288403467349866,
+  "sensitivity": 0.6120218579234973,
+  "specificity": 0.245658835546476,
+  "confusion": {
+    "tp": 112,
+    "tn": 481,
+    "fp": 1477,
+    "fn": 71
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 283849,
+  "runtime_sec": 103.98748874664307,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 23,
+    "metric": 0.48678812438252483,
+    "sensitivity": 0.3770491803278688,
+    "specificity": 0.5965270684371808
+  },
+  "vs_prev_best": {
+    "metric": -0.05794777764753822,
+    "sensitivity": 0.23497267759562845,
+    "specificity": -0.35086823289070485
+  },
+  "hypothesis": "Doubling hop_ms from 10 to 20 halves temporal spectrogram resolution. S1\u2192systole\u2192S2 phases span ~100\u2013300ms; at hop=20ms each phase gets ~5\u201315 time bins (vs 10\u201330 at hop=10ms). Tests whether temporal resolution matters for this cardiac-timing-sensitive task. Faster runtime expected (smaller spectrograms).",
+  "change_category": "preprocessing",
+  "change_description": "hop_ms 10 \u2192 20",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/root/heart-automl/data",
+    "cache_dir": "/root/heart-automl/data/cache",
+    "results_dir": "/root/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 5.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 20.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 7,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
