@@ -366,7 +366,11 @@ def main(cfg: dict) -> dict:
 
     results_dir = Path(cfg["results_dir"])
     prior_runs = _load_prior_runs(results_dir)
-    experiment_num = len(prior_runs) + 1
+    # Highest-seen experiment_num + 1 — robust to missing JSONs (e.g. pod reset
+    # losing files). Falls back to count + 1 only if no prior run has a number.
+    prior_nums = [r["experiment_num"] for r in prior_runs
+                  if isinstance(r.get("experiment_num"), int)]
+    experiment_num = (max(prior_nums) if prior_nums else len(prior_runs)) + 1
 
     prev_best: dict | None = None
     eligible = [r for r in prior_runs
