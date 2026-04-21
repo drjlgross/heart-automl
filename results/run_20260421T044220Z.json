@@ -1,0 +1,68 @@
+{
+  "experiment_num": 25,
+  "metric": 0.42212556584448274,
+  "sensitivity": 0.5628415300546448,
+  "specificity": 0.2814096016343207,
+  "confusion": {
+    "tp": 103,
+    "tn": 551,
+    "fp": 1407,
+    "fn": 80
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 283849,
+  "runtime_sec": 206.4607276916504,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 23,
+    "metric": 0.48678812438252483,
+    "sensitivity": 0.3770491803278688,
+    "specificity": 0.5965270684371808
+  },
+  "vs_prev_best": {
+    "metric": -0.06466255853804209,
+    "sensitivity": 0.18579234972677594,
+    "specificity": -0.3151174668028601
+  },
+  "hypothesis": "Tripling lr from 1e-3 to 3e-3 tests aggressive descent on kernel-7 baseline. #11's lr-down (1e-3\u21923e-4) produced mild coupling. If larger steps push past the positive corridor minimum into genuinely different weight configs, metric could recover or improve; if aggressive lr amplifies output-distribution shift, corridor collapse.",
+  "change_category": "training",
+  "change_description": "lr 1e-3 \u2192 3e-3",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/root/heart-automl/data",
+    "cache_dir": "/root/heart-automl/data/cache",
+    "results_dir": "/root/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 5.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 7,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.003,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
