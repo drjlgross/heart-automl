@@ -1,0 +1,68 @@
+{
+  "experiment_num": 35,
+  "metric": 0.4432020518316337,
+  "sensitivity": 0.20765027322404372,
+  "specificity": 0.6787538304392237,
+  "confusion": {
+    "tp": 38,
+    "tn": 1329,
+    "fp": 629,
+    "fn": 145
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 283849,
+  "runtime_sec": 315.05034613609314,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 23,
+    "metric": 0.48678812438252483,
+    "sensitivity": 0.3770491803278688,
+    "specificity": 0.5965270684371808
+  },
+  "vs_prev_best": {
+    "metric": -0.04358607255089114,
+    "sensitivity": -0.1693989071038251,
+    "specificity": 0.08222676200204282
+  },
+  "hypothesis": "Raising n_mels from 64 to 96 increases frequency resolution on kernel-7 baseline. Untested direction (phase-1 only halved to 32, which hit corridor). If higher resolution exposes finer discriminative spectral structure \u2014 particularly in the high-frequency 500-1000 Hz band where #13 identified signal \u2014 metric could improve. If at 96 we just add redundancy/noise, metric holds near #23 or regresses.",
+  "change_category": "preprocessing",
+  "change_description": "n_mels 64 \u2192 96",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/root/heart-automl/data",
+    "cache_dir": "/root/heart-automl/data/cache",
+    "results_dir": "/root/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 5.0,
+    "n_mels": 96,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 7,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
