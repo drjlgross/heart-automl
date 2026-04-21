@@ -1,0 +1,68 @@
+{
+  "experiment_num": 16,
+  "metric": 0.3777427061180975,
+  "sensitivity": 0.5956284153005464,
+  "specificity": 0.15985699693564862,
+  "confusion": {
+    "tp": 109,
+    "tn": 313,
+    "fp": 1645,
+    "fn": 74
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 52489,
+  "runtime_sec": 121.73418736457825,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 6,
+    "metric": 0.47254223948827,
+    "sensitivity": 0.2459016393442623,
+    "specificity": 0.6991828396322778
+  },
+  "vs_prev_best": {
+    "metric": -0.0947995333701725,
+    "sensitivity": 0.34972677595628415,
+    "specificity": -0.5393258426966292
+  },
+  "hypothesis": "Doubling batch_size from 32 to 64 halves gradient updates per epoch at fixed epochs=5, a small optimization-side perturbation. Per exp #12's finding that threshold coupling activates on substantial output-distribution shifts, this should either pass cleanly (null result \u2014 batch_size is a weak lever, useful loop-2 prior) or under-train toward a baseline-like sens/spec profile. Either outcome sharpens the training-category picture where epochs-up saturated and lr-down coupled mildly.",
+  "change_category": "training",
+  "change_description": "batch_size 32 \u2192 64",
+  "interactions_noticed": ["threshold"],
+  "config": {
+    "seed": 42,
+    "data_root": "/root/heart-automl/data",
+    "cache_dir": "/root/heart-automl/data/cache",
+    "results_dir": "/root/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 5.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 3,
+    "epochs": 5,
+    "batch_size": 64,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
