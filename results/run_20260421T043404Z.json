@@ -1,0 +1,68 @@
+{
+  "experiment_num": 23,
+  "metric": 0.48678812438252483,
+  "sensitivity": 0.3770491803278688,
+  "specificity": 0.5965270684371808,
+  "confusion": {
+    "tp": 69,
+    "tn": 1168,
+    "fp": 790,
+    "fn": 114
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 283849,
+  "runtime_sec": 179.80588674545288,
+  "kept": true,
+  "prev_best": {
+    "experiment_num": 6,
+    "metric": 0.47254223948827,
+    "sensitivity": 0.2459016393442623,
+    "specificity": 0.6991828396322778
+  },
+  "vs_prev_best": {
+    "metric": 0.014245884894254823,
+    "sensitivity": 0.13114754098360654,
+    "specificity": -0.10265577119509695
+  },
+  "hypothesis": "Kernel 7 extends #10's kernel-5 test. If wider receptive field progressively pushes outputs into the positive corridor (as #10's sens-up/spec-collapse suggests), kernel 7 should show deeper corridor collapse than kernel 5. If there's a sweet spot at some kernel size for discriminative structure (S1\u2192systole\u2192S2 spans ~200\u2013400ms), metric could recover toward baseline.",
+  "change_category": "architecture",
+  "change_description": "kernel_size 3 \u2192 7",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/root/heart-automl/data",
+    "cache_dir": "/root/heart-automl/data/cache",
+    "results_dir": "/root/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 5.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 7,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
