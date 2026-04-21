@@ -10,6 +10,7 @@ import hashlib
 import json
 import os
 import random
+import subprocess
 import time
 import warnings
 from datetime import datetime, timezone
@@ -424,7 +425,30 @@ def main(cfg: dict) -> dict:
         json.dump(record, fh, indent=2, default=str)
     print(f"wrote {out}")
 
+    # Real-time JSON checkpoint: results/ is gitignored, so force-add. Keeps
+    # every run's record on remote the moment it's written — guards against
+    # pod resets losing in-flight experiments (ref: exps #11-#15 lost Day 3).
+    _push_result_json(out, experiment_num, kept)
+
     return record
+
+
+def _push_result_json(out: Path, experiment_num: int, kept: bool) -> None:
+    repo_root = Path(__file__).resolve().parent
+    msg = f"results: exp #{experiment_num} JSON (kept={kept})"
+    for cmd in (
+        ["git", "add", "-f", str(out)],
+        ["git", "commit", "-m", msg],
+        ["git", "push"],
+    ):
+        try:
+            subprocess.run(cmd, cwd=repo_root, check=True,
+                           capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            print(f"[push_result_json] {cmd[1]} failed (rc={e.returncode}): "
+                  f"{e.stderr.strip() or e.stdout.strip()}")
+            return
+    print(f"[push_result_json] pushed {out.name} ({msg})")
 
 
 if __name__ == "__main__":
