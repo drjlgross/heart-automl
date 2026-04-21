@@ -1,0 +1,68 @@
+{
+  "experiment_num": 38,
+  "metric": 0.4680406012603471,
+  "sensitivity": 0.5300546448087432,
+  "specificity": 0.40602655771195095,
+  "confusion": {
+    "tp": 97,
+    "tn": 795,
+    "fp": 1163,
+    "fn": 86
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 283849,
+  "runtime_sec": 108.93162941932678,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 37,
+    "metric": 0.4910427725402859,
+    "sensitivity": 0.7650273224043715,
+    "specificity": 0.2170582226762002
+  },
+  "vs_prev_best": {
+    "metric": -0.02300217127993881,
+    "sensitivity": -0.23497267759562834,
+    "specificity": 0.18896833503575075
+  },
+  "hypothesis": "Raise threshold 0.3\u21920.35 on #37 baseline to recover specificity. #37 is 78% positive-predicting (sens 0.77, spec 0.22); binarizing slightly higher should pull some borderline positives back, lifting spec at modest sens cost. Pure post-processing \u2014 only binarization changes.",
+  "change_category": "threshold",
+  "change_description": "decision_threshold 0.3 \u2192 0.35",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/root/heart-automl/data",
+    "cache_dir": "/root/heart-automl/data/cache",
+    "results_dir": "/root/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 3.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 7,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.35,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
