@@ -1,0 +1,68 @@
+{
+  "experiment_num": 21,
+  "metric": 0.4551831633706749,
+  "sensitivity": 0.0273224043715847,
+  "specificity": 0.883043922369765,
+  "confusion": {
+    "tp": 5,
+    "tn": 1729,
+    "fp": 229,
+    "fn": 178
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 52489,
+  "runtime_sec": 93.04716110229492,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 6,
+    "metric": 0.47254223948827,
+    "sensitivity": 0.2459016393442623,
+    "specificity": 0.6991828396322778
+  },
+  "vs_prev_best": {
+    "metric": -0.01735907611759513,
+    "sensitivity": -0.2185792349726776,
+    "specificity": 0.18386108273748725
+  },
+  "hypothesis": "Setting threshold to 0.6 extends the ROC sweep above 0.5. The flat 0.3/0.4/0.5 middle (within 0.007) plateaus the ROC in that range; 0.6 tests whether the curve drops off steeply above 0.5 (degenerate-toward-negative) or continues slow decline. A steep drop would indicate 0.5 is at the top of the plateau rather than centered on it.",
+  "change_category": "threshold",
+  "change_description": "decision_threshold 0.3 \u2192 0.6",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/root/heart-automl/data",
+    "cache_dir": "/root/heart-automl/data/cache",
+    "results_dir": "/root/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 5.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 3,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.6,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
