@@ -1,0 +1,68 @@
+{
+  "experiment_num": 28,
+  "metric": 0.5,
+  "sensitivity": 1.0,
+  "specificity": 0.0,
+  "confusion": {
+    "tp": 183,
+    "tn": 0,
+    "fp": 1958,
+    "fn": 0
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 1132177,
+  "runtime_sec": 550.0565354824066,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 23,
+    "metric": 0.48678812438252483,
+    "sensitivity": 0.3770491803278688,
+    "specificity": 0.5965270684371808
+  },
+  "vs_prev_best": {
+    "metric": 0.013211875617475166,
+    "sensitivity": 0.6229508196721312,
+    "specificity": -0.5965270684371808
+  },
+  "hypothesis": "Extending #20's capacity line on kernel-7 baseline. #14 showed too-small = collapse, #20 showed 2x channels = balanced non-collapse. Does 4x channels continue the capacity gradient toward improvement, or does over-parameterization hurt at fixed 5 epochs? Informs whether capacity sweet spot shifts when paired with wider kernels.",
+  "change_category": "architecture",
+  "change_description": "conv_channels (24,48,96) \u2192 (48,96,192)",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/root/heart-automl/data",
+    "cache_dir": "/root/heart-automl/data/cache",
+    "results_dir": "/root/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 5.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      48,
+      96,
+      192
+    ],
+    "kernel_size": 7,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
