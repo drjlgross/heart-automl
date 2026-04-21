@@ -1,0 +1,68 @@
+{
+  "experiment_num": 6,
+  "metric": 0.47254223948827,
+  "sensitivity": 0.2459016393442623,
+  "specificity": 0.6991828396322778,
+  "confusion": {
+    "tp": 45,
+    "tn": 1369,
+    "fp": 589,
+    "fn": 138
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 52489,
+  "runtime_sec": 101.31855297088623,
+  "kept": true,
+  "prev_best": {
+    "experiment_num": 3,
+    "metric": 0.4656516351579899,
+    "sensitivity": 0.08196721311475409,
+    "specificity": 0.8493360572012257
+  },
+  "vs_prev_best": {
+    "metric": 0.0068906043302801034,
+    "sensitivity": 0.1639344262295082,
+    "specificity": -0.15015321756894795
+  },
+  "hypothesis": "Lowering decision_threshold from 0.5 to 0.3 will raise the challenge metric by recovering sensitivity from its 0.082 floor at modest cost to specificity, since the current operating point is far below the ~44% positive base rate.",
+  "change_category": "threshold",
+  "change_description": "decision_threshold 0.5 \u2192 0.3",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/workspace/heart-automl/data",
+    "cache_dir": "/workspace/heart-automl/data/cache",
+    "results_dir": "/workspace/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 5.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 3,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
