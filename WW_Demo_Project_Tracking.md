@@ -65,6 +65,8 @@ Second session: building out program.md, logging the reasoning, and staging/comm
 
 ## Day 3 — Saturday, April 18, 2026
 
+Loop 1 continued buildout: 
+
 - Returned to the project after an overnight gap; confirmed pod filesystem persistent and code intact (classify.py, program.md v1, CLAUDE.md, loop2_considerations.md, results/ all present at /workspace/heart-automl/).
 - Installed tmux (already present) and Claude Code (via native installer at ~/.local/bin/claude, v2.1.114, Claude Max, Opus 4.7 with 1M context) on the pod to enable the autoresearch loop.
 - Ran smoke-test execution of updated classify.py (post auto_val_prior removal, post hypothesis/interactions_noticed schema) on the pod: metric 0.4657, sens 0.082, spec 0.849, runtime 93.7s — bit-identical to prior pod run, confirming reproducibility under seed 42.
@@ -103,19 +105,71 @@ Second session: building out program.md, logging the reasoning, and staging/comm
 
 ## Day 4 — Sunday, April 19, 2026
 
-*(to be filled in)*
+Hardware:
+
+- Tried to test the newly arrived piezos. Discovered that my hardware rig lacked a connector between the piezo and the audio interface, and did research to determine what kind of connector I'd need.
 
 ---
 
 ## Day 5 — Monday, April 20, 2026
 
-*(to be filled in)*
+Hardware:
+
+- Sourced a XLR to 1/4" audio cable to close the loop.
+- Final setup: Imelod piezo (on lemonade cap) → XLR to 1/4" audio cable → CAD Audio CX2 → USB-C to USB-C cable → MacBook Air.
+- Tried to capture heart sounds with the CAD CX2 + Imelod piezo taped to a lemonade bottle cap, chest apex location, breath held at end-expiration. Was not successful.
+
+- Validated the signal chain with a tap test (clean periodic signal, saved as `20260420_1_tap_test.{aup3,wav,png}` in new `hardware_exps/` folder).
+
+- First chest recording looked flat on the Apple input meter; installed Audacity to see waveform and spectrum directly.
+
+- Spectrum analysis showed energy concentrated below 50 Hz consistent with the cardiac band, plus 60 Hz line noise and preamp noise floor — ambiguous whether the low-frequency peak was signal or motion artifact.
+
+- Ran a low-pass filter at 200 Hz + auto-amplify to try to isolate the band; resulting waveform had some irregularly-spaced events but no clean ~1 Hz periodic pattern.
+
+- Also tried the neck carotid pulse location — captured one coherent oscillatory event that looked heart-sound-shaped, but couldn't get consistent beats.
+
+- Concluded the rig as configured is below the noise floor for reliable cardiac signal capture; identified impedance buffer / JFET preamp as the unlocking component (logged to `loop2_considerations.md`).
+
+- Established `hardware_exps/` folder convention: `YYYYMMDD_NN_description.{aup3,wav,png}` per experiment + README as running log + audacity processing cheatsheet. 
+
+- While working, also spot-checked a few training data recordings in Audacity (a0001 abnormal, a0007 normal, a0028 normal) — noticed that visual inspection doesn't cleanly separate the classes, and a0001 looked more regular than a0028. Flagged as relevant to interpreting loop 1 results.
+
+---
+
+Software (re-setup and autonomous loop 1):
+
+- Resumed the software project around 10:30 PM Monday to find the RunPod pod had reset, wiping the filesystem and losing experiments #11-#15's JSONs (all kept=false, never committed to main) along with the venv and data.
+- Re-cloned heart-automl from GitHub on the pod, recreated the venv, reinstalled requirements, and re-downloaded PhysioNet training data via the archived wget URL from Day 2, ultimately landing the six training-a through training-f folders in data/.
+- Installed tmux on the pod and launched Claude Code inside it to prevent future session loss from browser disconnects; adopted "use tmux from the start" as a standing rule for this project.
+- Restored exp #1-10 results JSONs onto main by fetching them from the origin/local-checkpoint-day3-pre-autonomous sidecar branch (git checkout origin/sidecar -- results/) and committing them, confirming the sidecar itself remained untouched; exps #11-15's JSONs are accepted as permanently lost with their scientific content preserved in the orienting prompt for the fresh Claude Code instance.
+- Reconciled divergent state on the Mac local clone (12 commits behind origin/main) by pulling, resolving a merge conflict in loop2_considerations.md (stashed local edits plus Day 3 agent-authored findings), and pushing the merge.
+- Oriented a fresh Claude Code instance on the pod with a structured prompt covering the data gap, the #11-15 summary, the state after #15, the current category tally (all categories eligible under the 2x-of-2 floor), and the per-approval-on-git-checkout guardrail; the initial prompt was partially cut off by the terminal paste buffer but the agent had enough context to reconstruct state by reading results/ and the markdown files.
+- Supervised exp #16 (training, batch_size 32→64): surfaced a bookkeeping bug where classify.py's experiment_num counter used len(results/*.json)+1, which emitted #11 instead of #16 after the #11-15 JSON loss; flagged as a Mode A patch opportunity rather than hand-corrected silently.
+- Mode A patch 1 to classify.py: replaced the counter with experiment_num = max(prior) + 1, robust to missing JSONs; verified against current results/ state producing the correct next-value of 17; committed as 5e93dae.
+- Mode A patch 2 to classify.py: added _push_result_json() function invoked unconditionally after every results JSON write, calling git add -f, git commit with message "results: exp #N JSON (kept=<bool>)", and git push; motivated by tonight's loss of exps #11-15 JSONs despite their scientific value; catches both kept=true and kept=false paths and all three failure modes (degenerate/metric-loss/metric-win); committed as df86adc.
+- Verified patch 2's call-site logic before committing: _push_result_json(out, experiment_num, kept) fires at line 431, after the JSON write at line 425, on every path through main() including the v1.2 degeneracy-guard branch, with no early return between JSON write and push.
+- Retroactively pushed exp #16's JSON to close the gap that predated patch 2 landing (git add -f results/run_*.json, commit, push), then pushed the two classify.py patches; the session's loss-of-data recovery was complete at this point.
+- Wrote autonomous_mandate_loop1.md via Typora → git push → pod pull, after the RunPod web terminal repeatedly mangled heredoc and nano pastes with Unicode corruption and line-break stripping; adopted git-as-file-transfer as the working pattern for passing multi-paragraph prompts to the pod.
+- Observed that the per-approval-on-git-checkout guardrail was incompatible with autonomous mode: every kept=false run would wake me up for approval on the classify.py revert; after the agent stopped and flagged that Claude Code's approval dialog only offered blanket Bash(git *) rather than the scoped Bash(git checkout -- classify.py), compensated by instructing the agent never to run any git command outside a specific allowlist (add, commit, push, checkout -- classify.py, status, log, diff) even under widened approval.
+- Handed the agent the mandate file and an explicit scope, including approval setup as the first step; the agent proposed a narrow four-pattern approval set (python classify.py, python -c ast check, git checkout -- classify.py, git status/log/diff) with explicit reasoning about why broader scopes were deliberately not proposed; approved it as proposed.
+- Launched the autonomous loop at ~12:20 AM Tuesday and went to sleep at ~12:45 AM, confirming the loop was running by watching #18 through #22 push result JSONs to origin/main in real time (patch 2 working as designed).
 
 ---
 
 ## Day 6 — Tuesday, April 21, 2026
 
-*(to be filled in)*
+Loop 1 initial analysis:
+
+- Woke up Monday morning to find the loop stopped at exp #41 (26 experiments completed this session), with autonomous_loop1_run_log.md pushed as the final commit; ran for ~4.8 hours of ~6 budgeted, agent-determined stopping.
+- Two kept=true runs in the session: exp #23 ([architecture] kernel_size 3→7, metric 0.4725→0.4868, +0.0143, new best for the first time since exp #6) and exp #37 ([preprocessing] clip_seconds 5→3 on the kernel-7 baseline, metric 0.4868→0.4910, +0.0042, second new best).
+- Loop-1 ending state: best = exp #37 at metric 0.4910, total +0.037 over the Day-1 baseline of 0.36 and +0.019 over the exp-#6 pre-session anchor of 0.4725; 36 result JSONs on disk, combined category tally threshold 7 / class_weight 6 / preprocessing 12 / architecture 8 / training 7 / other 5, sampling floor of 5 satisfied in every category with room to spare.
+- Scientific findings surfaced this session: kernel_size is a narrow non-monotonic sweet spot (k=3 stable, k=5 corridor, k=7 peak, k=9 corridor) rather than a directional lever; capacity has a V-shape relationship with collapse (both 23k and 1.1M params degenerate, 283k is the sweet spot at kernel 7); class_weight coupling zone does NOT shift with capacity (tested directly at #27 and #33, refuted earlier hypothesis); clip_seconds=3 > 5 > 10 in this regime despite cardiac cycles being ~1s; two frequency bands carry discriminative signal (25-100 Hz and 500-1000 Hz) and resolution compression hurts more than band exclusion.
+- Methodological findings surfaced this session: the v1.2 degeneracy guard caught 3 of 4 edge cases (#26 predict-all-negative via zero-check, #22/#36/#40 via 5% floor — #40 at exactly 106 vs 107 threshold) but did NOT catch #37's quasi-quasi-degeneracy at tp+fp=1673 ~78% positive, coupling ratio 60×; candidate loop-2 rule: add a mechanical-coupling-ratio threshold alongside the 5% floor.
+- Patch 2 worked flawlessly across all 26 autonomous runs: every JSON auto-pushed to origin without intervention, no lost records, no prompt interruptions; patch 1 correctly emitted experiment_num from #17 through #41 including through kept-true commits at #23 and #37.
+- Agent kept interactions_noticed=[] in every session JSON per the approval-setup decision not to widen git scope for post-hoc edits, documenting coupling flags in the run log instead; this is its own loop-2 candidate (either mechanize the field pre-run or build an amend-and-push helper).
+- Agent wrote autonomous_loop1_run_log.md as the session capstone with full findings, per-category tally, stopping rationale, and artifact index; stopping rationale was "0 new bests in last 8 runs, 4 corridor/degen, 4 null/regression, structural landscape felt characterized" — voluntary handoff with ~1.2 hours of budget unused.
+- Pulled the full results/ directory and the run log to the Mac local clone for analysis review; loop-1 is complete, pivot to loop-2 planning.
 
 ---
 
