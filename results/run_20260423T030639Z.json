@@ -1,0 +1,71 @@
+{
+  "experiment_num": 43,
+  "metric": 0.5344739530132788,
+  "sensitivity": 1.0,
+  "specificity": 0.06894790602655772,
+  "confusion": {
+    "tp": 183,
+    "tn": 135,
+    "fp": 1823,
+    "fn": 0
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 283849,
+  "runtime_sec": 118.52583289146423,
+  "kept": true,
+  "prev_best": {
+    "experiment_num": 37,
+    "metric": 0.4910427725402859,
+    "sensitivity": 0.7650273224043715,
+    "specificity": 0.2170582226762002
+  },
+  "vs_prev_best": {
+    "metric": 0.043431180472992936,
+    "sensitivity": 0.23497267759562845,
+    "specificity": -0.14811031664964247
+  },
+  "hypothesis": "Label smoothing=0.1 (target side) on composed #37 baseline. #37's sens=0.765/spec=0.217 is parked in program_loop2.md tier 3's positive-saturation-corridor regime, where BCE with hard targets drives logits to large magnitudes (#9 and #7 are examples of that saturation being pushed past threshold into sens=1 collapse). Smoothing targets to {0.05, 0.95} removes the loss pressure for extreme logits without changing the discrimination direction, flattening the soft-output distribution. If spec lifts without sens collapsing, smoothing is a corridor-escape lever worth sweeping (0.05 and 0.2). If sens collapses, the sens is saturation-dependent and the corridor is tighter than hypothesized.",
+  "change_category": "training",
+  "change_description": "label_smoothing 0.0 \u2192 0.1 (target-side BCE smoothing)",
+  "interactions_noticed": [
+    "threshold"
+  ],
+  "config": {
+    "seed": 42,
+    "data_root": "/workspace/heart-automl/data",
+    "cache_dir": "/workspace/heart-automl/data/cache",
+    "results_dir": "/workspace/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 3.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 7,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "label_smoothing": 0.1,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
