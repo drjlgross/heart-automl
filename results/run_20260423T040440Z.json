@@ -1,0 +1,69 @@
+{
+  "experiment_num": 50,
+  "metric": 0.5010214504596527,
+  "sensitivity": 1.0,
+  "specificity": 0.0020429009193054137,
+  "confusion": {
+    "tp": 183,
+    "tn": 4,
+    "fp": 1954,
+    "fn": 0
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 283849,
+  "runtime_sec": 224.25382566452026,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 43,
+    "metric": 0.5344739530132788,
+    "sensitivity": 1.0,
+    "specificity": 0.06894790602655772
+  },
+  "vs_prev_best": {
+    "metric": -0.033452502553626084,
+    "sensitivity": 0.0,
+    "specificity": -0.06690500510725231
+  },
+  "hypothesis": "epochs 5\u219210 at composed #37 baseline. #9 showed catastrophic positive saturation (sens=1.000, spec=0.006) with epochs=10 at pre-#23 baseline, but that was on the weaker k=3 architecture and the longer 5s clips. k=7 (#23 win) + clip=3 (#37 win) may change saturation dynamics enough that extended training reaches a better discriminative optimum rather than corridor-collapsing. Two clean outcomes: (a) metric > #37 with balanced or moderately shifted sens/spec \u2014 5 epochs was under-training for composed architecture, further sweeps warranted; (b) saturation like #9 \u2014 epochs=10 at lr=1e-3 is generically unworkable for this model regardless of architecture, closing the axis and strongly implicating lr as the real lever (\u2192 epochs+lr compound next). ls reverted 0.1\u21920.0 to isolate.",
+  "change_category": "training",
+  "change_description": "epochs 5 \u2192 10 at composed baseline; ls 0.1 \u2192 0.0",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/workspace/heart-automl/data",
+    "cache_dir": "/workspace/heart-automl/data/cache",
+    "results_dir": "/workspace/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 3.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 7,
+    "epochs": 10,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "label_smoothing": 0.0,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
