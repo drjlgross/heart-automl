@@ -399,6 +399,17 @@ def main(cfg: dict) -> dict:
             "specificity": metrics["specificity"] - prev_best["specificity"],
         }
 
+    if prev_best is None:
+        interactions_noticed = []
+    else:
+        d_sens = abs(vs_prev_best["sensitivity"])
+        d_spec = abs(vs_prev_best["specificity"])
+        d_metric = abs(vs_prev_best["metric"])
+        if d_sens + d_spec > 3 * d_metric:
+            interactions_noticed = ["threshold"]
+        else:
+            interactions_noticed = []
+
     record = {
         "experiment_num":     experiment_num,
         "metric":             this_metric,
@@ -415,7 +426,7 @@ def main(cfg: dict) -> dict:
         "hypothesis":         "Shortening clip_seconds from 5 to 3 on kernel-7 baseline. #8's 5→10 triggered corridor, so longer was bad; 3 tests the opposite direction. Short clips mean ~3 cardiac cycles per sample vs ~5; if abnormal discrimination needs cycle-count, metric regresses; if it's local-frame-based, short clips preserve signal with faster runtime.",
         "change_category":    "preprocessing",
         "change_description": "clip_seconds 5 → 3",
-        "interactions_noticed": [],
+        "interactions_noticed": interactions_noticed,
         "config":             cfg,
     }
     results_dir.mkdir(parents=True, exist_ok=True)
