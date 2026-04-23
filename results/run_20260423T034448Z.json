@@ -1,0 +1,72 @@
+{
+  "experiment_num": 47,
+  "metric": 0.3855110322231339,
+  "sensitivity": 0.3879781420765027,
+  "specificity": 0.3830439223697651,
+  "confusion": {
+    "tp": 71,
+    "tn": 750,
+    "fp": 1208,
+    "fn": 112
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 283849,
+  "runtime_sec": 118.81863331794739,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 43,
+    "metric": 0.5344739530132788,
+    "sensitivity": 1.0,
+    "specificity": 0.06894790602655772
+  },
+  "vs_prev_best": {
+    "metric": -0.14896292079014495,
+    "sensitivity": -0.6120218579234973,
+    "specificity": 0.3140960163432074
+  },
+  "hypothesis": "Dropout p=0.3 in classifier head (after GAP, before linear) on composed #37 baseline. Loop 2 #42/#43/#45/#46 probed optimizer+wd, loss/target, input augmentation, and class_weight respectively \u2014 all either preserved or worsened corridor-parking. Dropout is the one mechanism-distinct regularizer I haven't touched: feature-level, breaks hidden-unit co-adaptation without altering input stats, loss pressure, target distribution, or mixing prior. At 283k params / 1099 train samples / 5 epochs, feature co-adaptation is plausible as a narrow-ridge source; if so, dropout should unclamp the corridor. If flat near #37's 0.4910: co-adaptation isn't the source and feature-level regularization is off the table. If regresses: 283k is tight enough that dropping features costs signal. Reverts ls 0.1\u21920.0 to isolate.",
+  "change_category": "architecture",
+  "change_description": "dropout_head 0.0 \u2192 0.3 in classifier head; ls 0.1 \u2192 0.0",
+  "interactions_noticed": [
+    "threshold"
+  ],
+  "config": {
+    "seed": 42,
+    "data_root": "/workspace/heart-automl/data",
+    "cache_dir": "/workspace/heart-automl/data/cache",
+    "results_dir": "/workspace/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 3.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 7,
+    "dropout_head": 0.3,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "label_smoothing": 0.0,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
