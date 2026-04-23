@@ -1,0 +1,70 @@
+{
+  "experiment_num": 53,
+  "metric": 0.5109554748070129,
+  "sensitivity": 0.9836065573770492,
+  "specificity": 0.03830439223697651,
+  "confusion": {
+    "tp": 180,
+    "tn": 75,
+    "fp": 1883,
+    "fn": 3
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 283849,
+  "runtime_sec": 112.24743986129761,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 43,
+    "metric": 0.5344739530132788,
+    "sensitivity": 1.0,
+    "specificity": 0.06894790602655772
+  },
+  "vs_prev_best": {
+    "metric": -0.023518478206265958,
+    "sensitivity": -0.016393442622950838,
+    "specificity": -0.03064351378958121
+  },
+  "hypothesis": "Compound dropout_head=0.3 + lr=3e-4 (non-saturating stack). Two non-saturating regimes found in loop 2: #47 (dropout=0.3) \u2192 balanced sens 0.388/spec 0.383; #51 (lr=3e-4) \u2192 spec-heavy sens 0.317/spec 0.448. Both escape corridor-parking by different mechanisms (feature-level co-adaptation break vs gentler gradient magnitudes). Compounding tests whether the mechanisms combine constructively: (a) if orthogonal and both suppress over-confidence \u2192 non-saturated regime with metric > #47/#51 and potentially > #37 (possible discrimination win); (b) destructively \u2192 even-less-discrimination balanced outcome; (c) one dominates \u2192 matches stronger-regime's behavior. Final clean probe of the corridor-escape path before characterization stop. ls reverted 0.1\u21920.0 to isolate.",
+  "change_category": "architecture",
+  "change_description": "dropout_head 0.0 \u2192 0.3 AND lr 1e-3 \u2192 3e-4 compound; ls 0.1 \u2192 0.0",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/workspace/heart-automl/data",
+    "cache_dir": "/workspace/heart-automl/data/cache",
+    "results_dir": "/workspace/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 3.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 7,
+    "dropout_head": 0.3,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.0003,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "label_smoothing": 0.0,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
