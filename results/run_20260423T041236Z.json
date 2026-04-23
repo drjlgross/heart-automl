@@ -1,0 +1,69 @@
+{
+  "experiment_num": 52,
+  "metric": 0.5,
+  "sensitivity": 1.0,
+  "specificity": 0.0,
+  "confusion": {
+    "tp": 183,
+    "tn": 0,
+    "fp": 1958,
+    "fn": 0
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 283849,
+  "runtime_sec": 224.9076268672943,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 43,
+    "metric": 0.5344739530132788,
+    "sensitivity": 1.0,
+    "specificity": 0.06894790602655772
+  },
+  "vs_prev_best": {
+    "metric": -0.034473953013278824,
+    "sensitivity": 0.0,
+    "specificity": -0.06894790602655772
+  },
+  "hypothesis": "Compound lr=3e-4 \u00d7 epochs=10. #51 (lr=3e-4, epochs=5) produced the loop's first spec-heavy regime (sens 0.317, spec 0.448 \u2014 polar opposite of #37's sens-heavy corridor at lr=1e-3). #50 (lr=1e-3, epochs=10) produced degenerate positive saturation. Compound tests whether extended gentle training migrates toward balanced discrimination (corridor-escape), or eventually positive-saturates like #50 (lr alone insufficient), or stays spec-heavy (lr sets polarity, epochs sets magnitude). Outcome (a) with metric > #37: significant compound win worth further sweeping; (b) near-#37 positive-corridor with metric ~#37: lr delays saturation but doesn't change endpoint; (c) deeper spec-corridor with metric \u2264 #51: polarity is lr-locked. ls reverted 0.1\u21920.0 to isolate.",
+  "change_category": "training",
+  "change_description": "epochs 5 \u2192 10 AND lr 1e-3 \u2192 3e-4 compound; ls 0.1 \u2192 0.0",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/workspace/heart-automl/data",
+    "cache_dir": "/workspace/heart-automl/data/cache",
+    "results_dir": "/workspace/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 3.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 7,
+    "epochs": 10,
+    "batch_size": 32,
+    "lr": 0.0003,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "label_smoothing": 0.0,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
