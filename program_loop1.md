@@ -1,4 +1,6 @@
-# program.md — heart-automl loop #1
+# program_loop1.md — heart-automl loop #1
+
+**STATUS: Historical.** This document governed loop 1 of the heart-automl project (experiments #1–#41). It is preserved for reference. Current loop rules are in `program_loop2.md` (or the highest-numbered `program_loop<N>.md` in the project root). **Do not apply the rules in this file to current experiments.**
 
 ## Goal
 
