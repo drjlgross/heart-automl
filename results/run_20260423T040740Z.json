@@ -1,0 +1,71 @@
+{
+  "experiment_num": 51,
+  "metric": 0.38242295863404724,
+  "sensitivity": 0.31693989071038253,
+  "specificity": 0.44790602655771194,
+  "confusion": {
+    "tp": 58,
+    "tn": 877,
+    "fp": 1081,
+    "fn": 125
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 283849,
+  "runtime_sec": 115.82795071601868,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 43,
+    "metric": 0.5344739530132788,
+    "sensitivity": 1.0,
+    "specificity": 0.06894790602655772
+  },
+  "vs_prev_best": {
+    "metric": -0.15205099437923159,
+    "sensitivity": -0.6830601092896175,
+    "specificity": 0.37895812053115424
+  },
+  "hypothesis": "lr 1e-3 \u2192 3e-4 at composed #37 baseline, epochs=5 unchanged. Loop 1 only probed lr > 1e-3 (#25 tested 3e-3 and regressed 0.065); below 1e-3 untested. #50 confirmed the training axis at lr=1e-3 saturates beyond ~5 epochs, pointing to lr as the saturation-driving knob. Gentler lr should produce a less-confident distribution (likely under-trained at 5 epochs). Three outcomes: (a) metric > #37 with less-saturated sens/spec \u2014 lr reduction is a corridor-escape lever and lr+epochs compound is next; (b) modest regression from under-training \u2014 compound needed; (c) flat \u2014 lr alone isn't the dominant lever. ls reverted 0.1\u21920.0 to isolate.",
+  "change_category": "training",
+  "change_description": "lr 1e-3 \u2192 3e-4 at composed baseline; ls 0.1 \u2192 0.0",
+  "interactions_noticed": [
+    "threshold"
+  ],
+  "config": {
+    "seed": 42,
+    "data_root": "/workspace/heart-automl/data",
+    "cache_dir": "/workspace/heart-automl/data/cache",
+    "results_dir": "/workspace/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 3.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 7,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.0003,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "label_smoothing": 0.0,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
