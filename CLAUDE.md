@@ -17,11 +17,14 @@ This separation is load-bearing for the project's demo narrative. Do not blur it
 
 - `classify.py` — single-file experiment script. All hyperparameters live in the
   `CONFIG` dict at the top. The autoresearch loop iterates on this file.
-- `program.md` — scientific direction document for the autoresearch loop.
-  **Authored by Julia only.** Do not write, edit, or draft this file. If asked
-  to help with program.md content, redirect: "program.md is human-authored; I can
-  help you think through ideas but shouldn't write it." The presence of program.md
-  also signals that autoresearch loop mode is active (see below).
+- `program_loop<N>.md` — scientific direction document for the current
+  autoresearch loop. **Authored by Julia only.** Do not write, edit, or
+  draft these files. If asked to help with program content, redirect:
+  "program files are human-authored; I can help you think through ideas
+  but shouldn't write them." The presence of any `program_loop*.md`
+  signals that autoresearch loop mode is active. The highest-numbered
+  file is the current loop's authoritative direction; prior-loop files
+  are historical.
 - `results/run_<ISO-timestamp>.json` — one file per experiment run. Schema is
   visible in the most recent file. Includes metric, sens, spec, config, kept/
   discarded status, change_category, change_description, and deltas vs prior best.
@@ -70,20 +73,14 @@ In this mode:
 ### Mode B: Autoresearch loop iteration
 
 You are in this mode when:
-- `program.md` exists in the project root
+- A `program_loop<N>.md` file exists in the project root (read the
+  highest-numbered one as authoritative)
 - The task is framed as running an experiment, proposing the next experiment,
   or iterating on classify.py to improve the metric
 
 In this mode:
-- Read `program.md` for scientific direction — it specifies what to test
+- Read `program_loop<N>.md` (the highest-numbered one in the project root) for scientific direction — it specifies what to test
 - Read prior `results/*.json` files to understand what's been tried
-- **Interpretation fields are data-dependent.** `hypothesis`,
-  `change_category`, and `change_description` describe what's being tested
-  and can be set pre-run. But `interactions_noticed` must be populated
-  post-run from the actual metrics and confusion matrix, never pre-filled
-  or pattern-matched from prior runs. A tag that fit exp #N does not
-  automatically fit exp #N+1 — always print the summary and read the
-  numbers before deciding what goes in the field.
 - Edit `classify.py` per your proposed change
 - Run the script: `python classify.py`
 - The script writes a new `results/run_<timestamp>.json` automatically
