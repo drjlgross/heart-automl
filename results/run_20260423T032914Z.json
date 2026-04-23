@@ -1,0 +1,73 @@
+{
+  "experiment_num": 45,
+  "metric": 0.4204594294389837,
+  "sensitivity": 0.8087431693989071,
+  "specificity": 0.032175689479060264,
+  "confusion": {
+    "tp": 148,
+    "tn": 63,
+    "fp": 1895,
+    "fn": 35
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 283849,
+  "runtime_sec": 119.12603497505188,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 43,
+    "metric": 0.5344739530132788,
+    "sensitivity": 1.0,
+    "specificity": 0.06894790602655772
+  },
+  "vs_prev_best": {
+    "metric": -0.11401452357429515,
+    "sensitivity": -0.1912568306010929,
+    "specificity": -0.036772216547497454
+  },
+  "hypothesis": "SpecAugment (time+freq masking, 2 masks per axis, time\u226430 frames \u2248300ms, freq\u22648 of 64 bins) applied training-only. Baseline reverts to #37 operating point (ls=0, threshold=0.3) because #43+#44 established that ls shifts operating point without adding discrimination \u2014 so SpecAugment is tested cleanly here, not confounded with ls. #37 is the scientifically clean discrimination anchor; to beat prev_best #43 (0.5345, near-degenerate) requires sens+spec > 1.069 from a balanced operating point, i.e. true discrimination improvement. If it works: augmentation is a corridor-escape lever and warrants sweeping. If flat (metric near #37's 0.4910): the model at 5 epochs isn't bottlenecked by memorization and augmentation isn't the right regularizer. If sharp regression: augmentation at these mask widths destroys class-differential spectral structure (e.g. the 500-1000 Hz signal #13 surfaced).",
+  "change_category": "preprocessing",
+  "change_description": "SpecAugment on (t\u226430 frames, f\u22648 bins, n_masks=2); label_smoothing reverted 0.1\u21920.0",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/workspace/heart-automl/data",
+    "cache_dir": "/workspace/heart-automl/data/cache",
+    "results_dir": "/workspace/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 3.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 7,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "label_smoothing": 0.0,
+    "train_spec_augment": true,
+    "time_mask_max": 30,
+    "freq_mask_max": 8,
+    "spec_augment_n_masks": 2,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
