@@ -1,0 +1,70 @@
+{
+  "experiment_num": 48,
+  "metric": 0.5252808988764045,
+  "sensitivity": 1.0,
+  "specificity": 0.05056179775280899,
+  "confusion": {
+    "tp": 183,
+    "tn": 99,
+    "fp": 1859,
+    "fn": 0
+  },
+  "n_train": 1099,
+  "n_val": 2141,
+  "n_params": 283849,
+  "runtime_sec": 112.94358921051025,
+  "kept": false,
+  "prev_best": {
+    "experiment_num": 43,
+    "metric": 0.5344739530132788,
+    "sensitivity": 1.0,
+    "specificity": 0.06894790602655772
+  },
+  "vs_prev_best": {
+    "metric": -0.009193054136874323,
+    "sensitivity": 0.0,
+    "specificity": -0.01838610827374873
+  },
+  "hypothesis": "dropout_head=0.1 sweep from #47 (p=0.3). #47 produced the loop's first balanced-prediction regime (sens 0.388 / spec 0.383) at p=0.3, but regressed metric to 0.3855. At p=0 (#37) the model fully parks at sens 0.765 / spec 0.217 (metric 0.4910). p=0.1 probes the midpoint: if dropout's mechanism-distinct break on co-adaptation interpolates smoothly, p=0.1 should produce a regime between those two \u2014 and potentially a metric above both if the sweet spot lives in [0.05, 0.15]. Three clean outcomes: (a) metric > 0.4910 with partially balanced sens/spec \u2014 genuine corridor-escape discrimination win; (b) interpolated metric between #47 and #37 \u2014 linear response, further fine-tuning needed; (c) regression below #37 \u2014 dropout is always net-negative at this scale.",
+  "change_category": "architecture",
+  "change_description": "dropout_head 0.0 \u2192 0.1 in classifier head; ls 0.1 \u2192 0.0",
+  "interactions_noticed": [],
+  "config": {
+    "seed": 42,
+    "data_root": "/workspace/heart-automl/data",
+    "cache_dir": "/workspace/heart-automl/data/cache",
+    "results_dir": "/workspace/heart-automl/results",
+    "train_folders": [
+      "training-a",
+      "training-b",
+      "training-c",
+      "training-d",
+      "training-f"
+    ],
+    "val_folders": [
+      "training-e"
+    ],
+    "sample_rate": 2000,
+    "clip_seconds": 3.0,
+    "n_mels": 64,
+    "win_ms": 25.0,
+    "hop_ms": 10.0,
+    "f_min": 25.0,
+    "f_max": 1000.0,
+    "conv_channels": [
+      24,
+      48,
+      96
+    ],
+    "kernel_size": 7,
+    "dropout_head": 0.1,
+    "epochs": 5,
+    "batch_size": 32,
+    "lr": 0.001,
+    "num_workers": 0,
+    "decision_threshold": 0.3,
+    "label_smoothing": 0.0,
+    "pos_weight_mode": "auto_train",
+    "pos_weight_manual": 1.0
+  }
+}
