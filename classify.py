@@ -57,6 +57,10 @@ CONFIG: dict = {
     "lr": 1e-3,
     "num_workers": 0,            # CPU box: 0 avoids fork overhead
     "decision_threshold": 0.3,
+    # Target-side label smoothing for BCE: y -> y*(1-ls) + 0.5*ls. 0.0 = off
+    # (loop 1 behavior). Lifts pressure on the loss to drive logits to
+    # saturation — a candidate corridor-escape lever.
+    "label_smoothing": 0.1,
 
     # Class weighting for BCEWithLogitsLoss pos_weight.
     #   "auto_train"      — neg/pos from training set (historical default)
@@ -224,11 +228,14 @@ class HeartCNN(nn.Module):
 # --------------------------------------------------------------------------- #
 # Train + eval
 # --------------------------------------------------------------------------- #
-def train_one_epoch(model, loader, optim, loss_fn, device) -> float:
+def train_one_epoch(model, loader, optim, loss_fn, device,
+                    label_smoothing: float = 0.0) -> float:
     model.train()
     total, n = 0.0, 0
     for x, y in loader:
         x, y = x.to(device), y.to(device)
+        if label_smoothing > 0.0:
+            y = y * (1.0 - label_smoothing) + 0.5 * label_smoothing
         optim.zero_grad()
         logits = model(x)
         loss = loss_fn(logits, y)
@@ -353,8 +360,10 @@ def main(cfg: dict) -> dict:
     loss_fn = nn.BCEWithLogitsLoss(pos_weight=pos_weight.to(device))
     optim = torch.optim.Adam(model.parameters(), lr=cfg["lr"])
 
+    ls = float(cfg.get("label_smoothing", 0.0))
     for epoch in range(1, cfg["epochs"] + 1):
-        loss = train_one_epoch(model, train_loader, optim, loss_fn, device)
+        loss = train_one_epoch(model, train_loader, optim, loss_fn, device,
+                               label_smoothing=ls)
         print(f"epoch {epoch:>2}/{cfg['epochs']}  train_loss={loss:.4f}")
 
     metrics = evaluate(model, val_loader, cfg["decision_threshold"], device)
@@ -423,9 +432,9 @@ def main(cfg: dict) -> dict:
         "kept":               kept,
         "prev_best":          prev_best,
         "vs_prev_best":       vs_prev_best,
-        "hypothesis":         "Shortening clip_seconds from 5 to 3 on kernel-7 baseline. #8's 5→10 triggered corridor, so longer was bad; 3 tests the opposite direction. Short clips mean ~3 cardiac cycles per sample vs ~5; if abnormal discrimination needs cycle-count, metric regresses; if it's local-frame-based, short clips preserve signal with faster runtime.",
-        "change_category":    "preprocessing",
-        "change_description": "clip_seconds 5 → 3",
+        "hypothesis":         "Label smoothing=0.1 (target side) on composed #37 baseline. #37's sens=0.765/spec=0.217 is parked in program_loop2.md tier 3's positive-saturation-corridor regime, where BCE with hard targets drives logits to large magnitudes (#9 and #7 are examples of that saturation being pushed past threshold into sens=1 collapse). Smoothing targets to {0.05, 0.95} removes the loss pressure for extreme logits without changing the discrimination direction, flattening the soft-output distribution. If spec lifts without sens collapsing, smoothing is a corridor-escape lever worth sweeping (0.05 and 0.2). If sens collapses, the sens is saturation-dependent and the corridor is tighter than hypothesized.",
+        "change_category":    "training",
+        "change_description": "label_smoothing 0.0 → 0.1 (target-side BCE smoothing)",
         "interactions_noticed": interactions_noticed,
         "config":             cfg,
     }
